@@ -14,3 +14,5 @@ En este laboratorio se configuró un firewall a nivel de red (Host-based IDS/IPS
 Se estableció una regla para descartar de manera silenciosa (DROP) las peticiones al puerto 80 (HTTP) para evitar escaneos de vulnerabilidades:
 ```bash
 sudo iptables -A INPUT -p tcp --dport 80 -j DROP
+```
+<img width="1796" height="964" alt="paso1 terminal" src="https://github.com/user-attachments/assets/6eee94dc-3123-4dc8-a2c1-91ee63f24119" />
