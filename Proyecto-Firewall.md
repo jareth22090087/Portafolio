@@ -27,7 +27,7 @@ sudo iptables -A INPUT -p tcp --dport 80 -j DROP
 ---
 ### Paso 2: Creación de Lista Blanca (Whitelist) para administración remota
 Se implementó un control de acceso estricto para el puerto 22 (SSH). En lugar de dejar el puerto abierto al público, se autorizó explícitamente (ACCEPT) únicamente a una IP de confianza (192.168.1.50).
-```
+```bash
 sudo iptables -A INPUT -p tcp -s 192.168.1.50 --dport 22 -j ACCEPT
 ```
 <img width="1805" height="629" alt="Paso3 Permitir el SSH desde una ip concreta" src="https://github.com/user-attachments/assets/20291349-3088-4de8-a829-ba53eee4696b" />
@@ -35,7 +35,7 @@ sudo iptables -A INPUT -p tcp -s 192.168.1.50 --dport 22 -j ACCEPT
 ---
 ### Paso 3: Cierre total del servicio SSH para externos
 Siguiendo la lógica secuencial de iptables, inmediatamente después de la lista blanca, se bloqueó el acceso al puerto 22 para cualquier otra IP. Al estar debajo de la regla del Paso 2, la IP autorizada entra, pero el resto de la red es rechazada.
-```
+```bash
 
 sudo iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
@@ -45,7 +45,7 @@ sudo iptables -A INPUT -p tcp --dport 22 -j DROP
 
 ### Paso 4: Implementación de Auditoría y Logging (Puerto 21)
 Para monitorear posibles intentos de fuerza bruta, se configuró una regla de auditoría en el puerto 21 (FTP). Se utilizó el objetivo no terminal -j LOG con un prefijo personalizado para alertar al sistema sin interrumpir el flujo del paquete.
-```
+```bash
 
 sudo iptables -A INPUT -p tcp --dport 21 -j LOG --log-prefix "Alerta- intento FTP: "
 ```
@@ -55,19 +55,19 @@ sudo iptables -A INPUT -p tcp --dport 21 -j LOG --log-prefix "Alerta- intento FT
 (Nota técnica: Al ser una regla LOG, el tráfico se registra en la bitácora pero continúa su evaluación en la cadena de reglas).
 ### Paso 5: Verificación de Reglas
 Se validó la tabla de enrutamiento para asegurar el orden correcto de las políticas de filtrado.
-```
+```bash
 
 sudo iptables -L -v -n
 ```
 <img width="1412" height="663" alt="paso 6 verificar reglas" src="https://github.com/user-attachments/assets/7374183d-2029-4288-aac0-21e747fe6aaf" />
 
-Resultado esperado: El firewall muestra la aceptación exclusiva de la IP permitida en el puerto 22, la denegación del puerto 80, y el monitoreo activo del puerto 21.
+*Resultado esperado:* El firewall muestra la aceptación exclusiva de la IP permitida en el puerto 22, la denegación del puerto 80, y el monitoreo activo del puerto 21.
 ---
 ## 3. Pruebas de Concepto (PoC) y Resolución de Conflictos
 Durante la validación, se realizó un ataque simulado desde el propio equipo (localhost) usando Netcat:
 ```
 
-nc -vz 127.0.0.1 21`
+nc -vz 127.0.0.1 21
 ```
 
 Problema identificado: Inicialmente, el sistema no registró el ataque en los logs debido a la política de confianza predeterminada de Linux sobre la interfaz de Loopback (lo), la cual se procesa antes que las reglas añadidas con -A (Append).
