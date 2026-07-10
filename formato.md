@@ -1,7 +1,7 @@
 # Reporte Técnico: [Nombre del Laboratorio o Máquina]
 
 **Fecha:** [DD/MM/AAAA]
-**Autor:** [Tu Nombre o Usuario de GitHub]
+**Autor:** [T]
 **Plataforma:** [ej. TryHackMe / HackTheBox / Local]
 **Dificultad:** [ej. Fácil / Media / Difícil]
 
