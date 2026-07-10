@@ -6,7 +6,7 @@ En este laboratorio se implementó y configuró un Sistema de Detección de Intr
 
 Parámetros de Prueba:
 
-**Sistema Operativo: Kali Linux**
+* **Sistema Operativo: Kali Linux**
 
 * **Motor IDS: Suricata (v8.0.5)**
 
@@ -27,7 +27,7 @@ sudo iptables -F
 
 
 ### Paso 2: Creación de Firmas Personalizadas (Ruleset)
-Se configuró el archivo local.rules para dictar el comportamiento analítico de Suricata,se entro al archivo usando  sudo nado e indicando la direccion del archiv
+Se configuró el archivo local.rules para dictar el comportamiento analítico de Suricata,se entro al archivo usando  sudo nano e indicando la direccion del archivo
 ```Bash
 sudo nano /etc/suricata/rules/local.rules
 ```
